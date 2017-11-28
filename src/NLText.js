@@ -1,19 +1,32 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import NLCategory from "./NLCategory";
 
 class NLText extends Component {
+  categories() {
+    if (this.props.categories.length) {
+      return this.props.categories.map(category => (
+        <NLCategory {...category} />
+      ));
+    }
+  }
+
   render() {
-    return <div>{this.props.children}</div>;
+    return (
+      <div>
+        {this.props.children}
+        {this.categories()}
+      </div>
+    );
   }
 }
 
+NLText.defaultProps = {
+  categories: []
+};
+
 NLText.propTypes = {
-  categories: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      confidence: PropTypes.number.isRequired
-    })
-  ),
+  categories: PropTypes.arrayOf(PropTypes.shape(NLCategory.propTypes)),
   entities: PropTypes.arrayOf(
     PropTypes.shape({
       mentions: PropTypes.arrayOf(
