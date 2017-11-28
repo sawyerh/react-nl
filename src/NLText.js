@@ -4,33 +4,45 @@ import NLCategory from "./NLCategory";
 import NLEntity from "./NLEntity";
 import reactStringReplace from "react-string-replace";
 
-class NLText extends Component {
-  categories() {
-    if (this.props.categories.length) {
-      return this.props.categories.map(category => (
-        <NLCategory key={category.name} {...category} />
-      ));
-    }
-  }
+let counter = 0;
 
+class NLText extends Component {
   annotatedText(text) {
     let replacedText = text;
 
     this.props.entities.forEach(entity => {
-      replacedText = reactStringReplace(replacedText, entity.name, match => (
-        <NLEntity {...entity}>{match}</NLEntity>
-      ));
+      replacedText = reactStringReplace(replacedText, entity.name, match => {
+        ++counter;
+        return (
+          <NLEntity {...entity} key={match + counter}>
+            {match}
+          </NLEntity>
+        );
+      });
     });
 
     return replacedText;
   }
 
   annotatedChildren() {
-    return React.Children.map(this.props.children, child =>
+    return React.Children.map(this.props.children, (child, i) => {
       // TODO: Handle case where child is not a string (ie. a node with HTML tags within it)
       // We should be able to loop through it like we do here, maybe reusing this method
-      this.annotatedText(child.props.children)
-    );
+      const Component = child.type;
+      return (
+        <Component key={i}>
+          {this.annotatedText(child.props.children)}
+        </Component>
+      );
+    });
+  }
+
+  categories() {
+    if (this.props.categories.length) {
+      return this.props.categories.map(category => (
+        <NLCategory key={category.name} {...category} />
+      ));
+    }
   }
 
   render() {
