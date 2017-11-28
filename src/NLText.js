@@ -50,23 +50,7 @@ NLText.defaultProps = {
 NLText.propTypes = {
   children: PropTypes.node.isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape(NLCategory.propTypes)),
-  entities: PropTypes.arrayOf(
-    PropTypes.shape({
-      mentions: PropTypes.arrayOf(
-        PropTypes.shape({
-          text: PropTypes.shape({
-            content: PropTypes.string
-          })
-        })
-      ),
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      sentiment: PropTypes.shape({
-        magnitude: PropTypes.number,
-        score: PropTypes.number
-      })
-    })
-  )
+  entities: PropTypes.arrayOf(PropTypes.shape(NLEntity.propTypes))
 };
 
 export default NLText;

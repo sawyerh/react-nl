@@ -8,7 +8,7 @@ class NLEntity extends Component {
 }
 
 NLEntity.propTypes = {
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   salience: PropTypes.number.isRequired,
